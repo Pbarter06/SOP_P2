@@ -27,13 +27,16 @@ void *lector(void *arg) {
         }
         lect_esperando--;
         n_lect++;
+
+        pthread_mutex_unlock(&m);
         // Leer datos
         printf("Lector %d leyendo: %d\n", id, dato);
-        printf("Número de lectores esperando: %d\n,", lect_esperando); 
+       // printf("Número de lectores esperando: %d\n,", lect_esperando); 
         usleep(rand() % 1000000); // Retraso aleatorio de hasta 1 segundo (en microsegundos)
 
         //fin de leer datos
 
+        pthread_mutex_lock(&m); 
         n_lect--; 
         if(n_lect == 0){
             pthread_cond_broadcast(&cond_escr); 
